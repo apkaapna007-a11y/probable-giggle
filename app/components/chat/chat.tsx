@@ -68,6 +68,11 @@ export function Chat() {
     chatId,
   })
 
+  const selectedModel =
+    selectedMode === "academic"
+      ? "mistral-large-latest-academic"
+      : "mistral-large-latest"
+
   // State to pass between hooks
   const [hasDialogAuth, setHasDialogAuth] = useState(false)
   const isAuthenticated = useMemo(() => !!user?.id, [user?.id])

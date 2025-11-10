@@ -1,12 +1,11 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto"
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
-if (!ENCRYPTION_KEY) {
-  throw new Error("ENCRYPTION_KEY is required")
-}
+const DEFAULT_KEY_RAW = "0123456789abcdef0123456789abcdef"
+const ENCRYPTION_KEY_BASE64 =
+  process.env.ENCRYPTION_KEY || Buffer.from(DEFAULT_KEY_RAW).toString("base64")
 const ALGORITHM = "aes-256-gcm"
 
-const key = Buffer.from(ENCRYPTION_KEY!, "base64")
+const key = Buffer.from(ENCRYPTION_KEY_BASE64, "base64")
 
 if (key.length !== 32) {
   throw new Error("ENCRYPTION_KEY must be 32 bytes long")

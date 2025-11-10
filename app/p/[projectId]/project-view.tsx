@@ -108,6 +108,10 @@ export function ProjectView({ projectId }: ProjectViewProps) {
     updateChatModel: () => Promise.resolve(),
     chatId: null,
   })
+  const selectedModel =
+    selectedMode === "academic"
+      ? "mistral-large-latest-academic"
+      : "mistral-large-latest"
 
   // Simplified ensureChatExists for authenticated project context
   const ensureChatExists = useCallback(
@@ -357,8 +361,8 @@ export function ProjectView({ projectId }: ProjectViewProps) {
       files,
       handleFileUpload,
       handleFileRemove,
-      handleModelChange,
-      selectedModel,
+      handleModeChange,
+      selectedMode,
       isAuthenticated,
       stop,
       status,
