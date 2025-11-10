@@ -68,7 +68,7 @@ export function ByokSection() {
       toast({
         title: "Failed to delete API key",
         description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
+        status: "error",
       })
     },
   })
@@ -105,7 +105,7 @@ export function ByokSection() {
       toast({
         title: "Failed to save API key",
         description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
+        status: "error",
       })
     },
   })

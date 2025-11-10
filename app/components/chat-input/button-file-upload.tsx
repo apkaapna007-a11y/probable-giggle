@@ -15,8 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { isSupabaseEnabled } from "@/lib/supabase/config"
-import { cn } from "@/lib/utils"
-import { FileArrowUp, Paperclip } from "@phosphor-icons/react"
+import { FileArrowUp } from "@phosphor-icons/react"
 import React from "react"
 import { PopoverContentAuth } from "./popover-content-auth"
 
@@ -33,18 +32,35 @@ export function ButtonFileUpload({
     return null
   }
 
-  // NelsonGPT supports file uploads for clinical cases
-  const isFileUploadAvailable = true
-
-  if (!isFileUploadAvailable) {
-    return null // Shouldn't happen for NelsonGPT
+  if (!isUserAuthenticated) {
+    return (
+      <Popover>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <PopoverTrigger asChild>
+              <Button
+                size="sm"
+                variant="secondary"
+                className="border-border dark:bg-secondary size-9 rounded-full border bg-transparent"
+              >
+                <FileArrowUp className="size-4" />
+              </Button>
+            </PopoverTrigger>
+          </TooltipTrigger>
+          <TooltipContent>Upload files</TooltipContent>
+        </Tooltip>
+        <PopoverContent className="w-80">
+          <PopoverContentAuth />
+        </PopoverContent>
+      </Popover>
+    )
   }
 
   return (
-    <Popover>
+    <FileUpload onFilesAdded={onFileUpload}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <PopoverTrigger asChild>
+          <FileUploadTrigger asChild>
             <Button
               size="sm"
               variant="secondary"
@@ -52,22 +68,16 @@ export function ButtonFileUpload({
             >
               <FileArrowUp className="size-4" />
             </Button>
-          </PopoverTrigger>
+          </FileUploadTrigger>
         </TooltipTrigger>
         <TooltipContent>Upload files</TooltipContent>
       </Tooltip>
 
-      <PopoverContent className="w-80">
-        {isUserAuthenticated ? (
-          <FileUpload
-            onFileUpload={onFileUpload}
-            maxFiles={5}
-            maxSize={10 * 1024 * 1024} // 10MB
-          />
-        ) : (
-          <PopoverContentAuth />
-        )}
-      </PopoverContent>
-    </Popover>
+      <FileUploadContent className="pointer-events-none select-none">
+        <div className="bg-background/60 text-foreground rounded-lg p-6 shadow-lg">
+          Drop files to upload
+        </div>
+      </FileUploadContent>
+    </FileUpload>
   )
 }
